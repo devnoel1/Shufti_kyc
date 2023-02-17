@@ -5,7 +5,6 @@ namespace App\Helpers;
 
 class Kyc
 {
-    private static $url = 'https://api.shuftipro.com/';
 
     //Your Shufti Pro account Client ID
     private static $client_id;
@@ -18,7 +17,7 @@ class Kyc
         self::$secret_key = env('SHUFTI_SECRET_KEY ');
     }
 
-   public static function verifyDocument()
+    public static function verifyDocument()
     {
         $verification_request = [
             'reference'    => 'ref-' . rand(4, 444) . rand(4, 444),
@@ -48,7 +47,7 @@ class Kyc
 
         $post_data = json_encode($verification_request);
         //Calling Shufti Pro request API using curl
-        $response = self::send_request(self::$url, $post_data);
+        $response = self::send_request($post_data);
         //Get Shufti Pro API Response
         $response_data    = $response['body'];
 
@@ -57,7 +56,7 @@ class Kyc
         return $decoded_response['verification_url'];;
     }
 
-    private static function send_request($url, $post_data)
+    private static function send_request($post_data)
     {
         $auth = self::$client_id . ":" . self::$secret_key;
         $headers = ['Content-Type: application/json'];
@@ -68,7 +67,7 @@ class Kyc
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_HEADER, 1);
-        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_URL, 'https://api.shuftipro.com/');
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC); // remove this in case of Access Token
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
