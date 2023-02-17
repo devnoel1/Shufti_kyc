@@ -10,5 +10,7 @@ class kycController extends Controller
     function makeVerification(Request $request)
     {
         $kyc = Kyc::verifyDocument();
+
+        return response()->json(['kyc_url'=>$kyc]);
     }
 }
